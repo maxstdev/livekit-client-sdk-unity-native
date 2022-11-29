@@ -1,0 +1,32 @@
+{
+  "name": "com.maxst.unilivekit",
+  "version": "0.7.0",
+  "displayName": "UniLiveKit SDK",
+  "description": "LiveKit Unity SDK for Native Platforms",
+  "unity": "2021.3",
+  "author": {
+    "name": "MAXST Co., Ltd",
+    "email": "dmkim@maxst.com"
+  },
+  "samples": [
+    {
+      "displayName": "Example",
+      "description": "UniLiveKit Sample",
+      "path": "Samples~"
+    }
+  ],
+  "scopedRegistries": [
+    {
+      "name": "UniTask",
+      "url": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+      "scopes": [
+        "com.cysharp.unitask"
+      ]
+    }
+  ],
+  "dependencies": {
+    "com.unity.webrtc": "2.4.0-exp.11",
+    "com.unity.nuget.newtonsoft-json": "3.0.2",
+    "com.cysharp.unitask": "2.3.3"
+  }
+}
