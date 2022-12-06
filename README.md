@@ -45,9 +45,15 @@ Interface was implemented referring to LiveKit [Unity WebGL SDK](https://github.
 
 ### Connecting to a room
 ```cs
+public class JoinMenu : MonoBehaviour
+{
+    public static string LivekitURL { get; private set; }
+    public static string RoomToken { get; private set; }
+}
+
 public class ExampleRoom : MonoBehaviour
 {
-    public Room Room;
+    public Room room;
 
     void Start()
     {
@@ -82,34 +88,33 @@ room.LocalParticipant?.SetMicrophone(true);
 
 ### Display a video on a RawImage
 ```cs
-    void IRoomDelegate.DidSubscribe(Room room, RemoteParticipant participant, RemoteTrackPublication publication, Track track)
+void IRoomDelegate.DidSubscribe(Room room, RemoteParticipant participant, RemoteTrackPublication publication, Track track)
+{
+    DispatchQueue.MainSafeAsync(() =>
     {
-        DispatchQueue.MainSafeAsync(() =>
+        switch (track.kind)
         {
-            switch (track.kind)
-            {
-                case Track.Kind.Video:
-                    var videoTrack = track.GetMediaTrack as VideoStreamTrack;
+            case Track.Kind.Video:
+                var videoTrack = track.GetMediaTrack as VideoStreamTrack;
 
-                    videoTrack.OnVideoReceived += (texture =>
-                    {
-                        GameObject participantViewGO = Instantiate(participantViewPrefab, ViewContainer.transform);
-                        var participantView = participantViewGO.GetComponent<ParticipantView>();
+                videoTrack.OnVideoReceived += (texture =>
+                {
+                    GameObject participantViewGO = Instantiate(participantViewPrefab, ViewContainer.transform);
+                    var participantView = participantViewGO.GetComponent<ParticipantView>();
 
-                        var videoView = participantView.VideoView;
-                        videoView.texture = texture;
-                    });
-                    break;
+                    var videoView = participantView.VideoView;
+                    videoView.texture = texture;
+                });
+                break;
 
-                case Track.Kind.Audio:
-                    break;
+            case Track.Kind.Audio:
+                break;
 
-                default:
-                    break;
-            }
-        });
-    }
-
+            default:
+                break;
+        }
+    });
+}
 ```
 
 ## Known issues

@@ -88,10 +88,7 @@ public partial class ExampleRoom : MonoBehaviour
 
             DisconnectButton.onClick.AddListener(async () =>
             {
-                await room.Disconnect();
-                room.CleanupDisconnection();
-
-                SceneManager.LoadScene("JoinScene", LoadSceneMode.Single);
+                DisconnectRoom();
             });
 
             Debug.Log("Connected to the room");
@@ -115,8 +112,17 @@ public partial class ExampleRoom : MonoBehaviour
         }
         catch
         {
-            Debug.Log("Failed to connect to the room !");
+            Debug.LogWarning("Failed to connect to the room !");
+            DisconnectRoom();
         }
+    }
+
+    async void DisconnectRoom()
+    {
+        await room.Disconnect();
+        room.CleanupDisconnection();
+
+        SceneManager.LoadScene("JoinScene", LoadSceneMode.Single);
     }
 
     void Update()
